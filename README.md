@@ -37,8 +37,12 @@ To try out this example app:
 3. Build the example app:
 
    ```bash
-   $ west build zephyr-esp32-example
+   $ west build zephyr-esp32-example --sysbuild
    ```
+
+   `--sysbuild` will build the MCUboot image as well, which will also get
+   flashed in the following step. To run sysbuild by default, you can configure
+   your workspace with `west config --local build.sysbuild True`.
 
 4. Flash the example app:
 
