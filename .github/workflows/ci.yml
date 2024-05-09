@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      # Zephyr toolchain from here:
+      # https://github.com/zephyrproject-rtos/docker-image/pkgs/container/ci
+      image: ghcr.io/zephyrproject-rtos/ci:v0.26.6
+    env:
+      # Tell cmake where to find the zephyr sdk
+      CMAKE_PREFIX_PATH: /opt/toolchains
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          path: zephyr-workspace/zephyr-esp32-example
+
+      - name: ♻️ Initialize Zephyr Workspace
+        # Set up the Zephyr workspace and install the Python dependencies
+        run: |
+          cd zephyr-workspace
+          rm -rf .west
+          west init -l zephyr-esp32-example
+          west update --narrow -o=--depth=1
+          west blobs fetch hal_espressif
+
+      - name: 💾 Cache ~/.cache/ccache
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/ccache
+          key: ccache-v1-${{ runner.os }}-${{ hashFiles('zephyr-workspace/zephyr-esp32-example/west.yml') }}
+          restore-keys: |
+            ccache-v1-${{ runner.os }}-
+
+      - name: 🔨 Build Project
+        run: |
+          cd zephyr-workspace
+          ccache -z
+          west build --sysbuild \
+            --pristine=always \
+            --board=esp32s3_devkitm zephyr-esp32-example \
+            -- \
+            -DCONFIG_MEMFAULT_PROJECT_KEY=\"1234\"
+          ccache -sv
