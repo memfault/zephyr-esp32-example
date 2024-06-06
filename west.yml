@@ -19,4 +19,4 @@ manifest:
     - name: memfault-firmware-sdk
       path: modules/lib/memfault-firmware-sdk
       remote: memfault
-      revision: 1.9.0
+      revision: 1.9.2
