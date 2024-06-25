@@ -1,12 +1,4 @@
-> [!IMPORTANT]
->
-> 🚧 This example repo is using an experimental version of the [Memfault
-> Firmware SDK](https://github.com/memfault/memfault-firmware-sdk). Feel free to
-> test it out and send us any feedback at <support@memfault.com>, but expect
-> this example to have some missing functionality or other undocumented
-> limitations! 🚧
-
-# Memfault Zephyr + ESP32C3 Example
+# Memfault Zephyr + ESP32 Example
 
 This sample app is based on the Zephyr `samples/net/wifi` example. It
 demonstrates a Zephyr + ESP32 integration with the Memfault SDK. It has been
@@ -28,16 +20,16 @@ To try out this example app:
 2. Create a zephyr workspace and set it up with this project:
 
    ```bash
-   $ mkdir zephyr-workspace
-   $ cd zephyr-workspace
-   $ west init -m https://github.com/memfault/zephyr-esp32-example
-   $ west update
+   mkdir zephyr-workspace
+   cd zephyr-workspace
+   west init -m https://github.com/memfault/zephyr-esp32-example
+   west update
    ```
 
 3. Build the example app:
 
    ```bash
-   $ west build zephyr-esp32-example --sysbuild
+   west build zephyr-esp32-example --sysbuild
    ```
 
    `--sysbuild` will build the MCUboot image as well, which will also get
@@ -47,7 +39,7 @@ To try out this example app:
 4. Flash the example app:
 
    ```bash
-    $ west flash
+    west flash
    ```
 
 5. Open a serial console and interact with the sample app shell. For example
@@ -78,6 +70,9 @@ The payload to upload to Memfault is:
 ```plaintext
 build/zephyr-esp32-example/zephyr/zephyr.signed.confirmed.bin
 ```
+
+This file is set as "confirmed", so it won't revert after 1 boot cycle (not safe
+against bootloops!). See the [Zephyr documentation](https://docs.zephyrproject.org/apidoc/3.6.0/group__mcuboot__api.html#ga95ccc9e1c7460fec16b9ce9ac8ad7a72) for details.
 
 Follow the normal Memfault OTA workflow:
 
