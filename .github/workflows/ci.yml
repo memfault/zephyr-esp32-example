@@ -47,14 +47,17 @@ jobs:
         run: |
           cd zephyr-workspace
           ccache -z
+
           west build --sysbuild \
             --pristine=always \
             --board=esp32s3_devkitm zephyr-esp32-example \
             -- \
             -DCONFIG_MEMFAULT_PROJECT_KEY=\"1234\"
+
           west build --sysbuild \
             --pristine=always \
-            --board=esp32s3_devkitm zephyr-esp32-example \
+            --board=esp32c3_devkitm zephyr-esp32-example \
             -- \
             -DCONFIG_MEMFAULT_PROJECT_KEY=\"1234\"
+
           ccache -sv
