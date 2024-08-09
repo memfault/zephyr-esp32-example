@@ -5,7 +5,7 @@ demonstrates a Zephyr + ESP32 integration with the Memfault SDK. It has been
 tested on the following boards:
 
 - `esp32c3_devkitm` (default board)
-- `esp32s3_devkitm`
+- `esp32s3_devkitm/esp32s3/procpu`
 
 ## Getting Started
 
@@ -56,7 +56,7 @@ To try out this example app:
    [00:09:21.911,000] <inf> mflt: HW version: esp32c3_devkitm
 
    # connect wifi
-   uart:~$ wifi connect <ssid> <pw>
+   uart:~$ wifi connect -s "<ssid>" -k <key type> -p "<pw>"
 
    # test memfault export over uart
    uart:~$ mflt export
