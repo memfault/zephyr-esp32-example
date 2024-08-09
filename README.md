@@ -5,7 +5,7 @@ demonstrates a Zephyr + ESP32 integration with the Memfault SDK. It has been
 tested on the following boards:
 
 - `esp32c3_devkitm` (default board)
-- `esp32s3_devkitm`
+- `esp32s3_devkitm/esp32s3/procpu`
 
 ## Getting Started
 
