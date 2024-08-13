@@ -9,6 +9,7 @@ manifest:
           - hal_espressif
           - mbedtls
           - mcuboot
+          - tinycrypt
 
     - name: memfault-firmware-sdk
       url: https://github.com/memfault/memfault-firmware-sdk
