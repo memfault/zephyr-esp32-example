@@ -60,4 +60,10 @@ jobs:
             -- \
             -DCONFIG_MEMFAULT_PROJECT_KEY=\"1234\"
 
+          west build --sysbuild \
+            --pristine=always \
+            --board=esp32_devkitc_wrover/esp32/procpu zephyr-esp32-example \
+            -- \
+            -DCONFIG_MEMFAULT_PROJECT_KEY=\"1234\"
+
           ccache -sv
