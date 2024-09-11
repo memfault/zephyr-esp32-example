@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # Default board
-set(BOARD esp32c3_devkitm)
+set(BOARD esp32s3_devkitm/esp32s3/procpu)
 
 cmake_minimum_required(VERSION 3.20.0)
 
