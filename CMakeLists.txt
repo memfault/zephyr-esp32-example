@@ -28,3 +28,8 @@ endif()
 zephyr_compile_definitions(
   ZEPHYR_MEMFAULT_EXAMPLE_GIT_SHA1=\"${ZEPHYR_MEMFAULT_EXAMPLE_GIT_SHA1}\"
 )
+
+# wrap lfs_api_erase so we can track how often it is called
+zephyr_ld_options(-Wl,--wrap=flash_area_write)
+zephyr_ld_options(-Wl,--wrap=flash_area_erase)
+zephyr_ld_options(-Wl,--wrap=flash_area_flatten)

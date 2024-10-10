@@ -7,6 +7,7 @@ manifest:
         # Limit the Zephyr modules to the required set
         name-allowlist:
           - hal_espressif
+          - littlefs
           - mbedtls
           - mcuboot
 
