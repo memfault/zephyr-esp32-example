@@ -2,13 +2,20 @@ manifest:
   projects:
     - name: zephyr
       url: https://github.com/zephyrproject-rtos/zephyr
-      revision: v3.7.0
+      revision: main
       import:
         # Limit the Zephyr modules to the required set
         name-allowlist:
           - hal_espressif
           - mbedtls
           - mcuboot
+
+    # Override hal_espressif to pull in this fix:
+    # https://github.com/zephyrproject-rtos/hal_espressif/commit/81a71926d3b44c4a871a380d84345592817494fb
+    - name: hal_espressif
+      url: https://github.com/zephyrproject-rtos/hal_espressif
+      revision: 81a71926d3b44c4a871a380d84345592817494fb
+      path: modules/hal/espressif
 
     - name: memfault-firmware-sdk
       url: https://github.com/memfault/memfault-firmware-sdk
