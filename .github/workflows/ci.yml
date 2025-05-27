@@ -33,6 +33,20 @@ jobs:
           rm -rf .west
           west init -l zephyr-esp32-example
           west update --narrow -o=--depth=1
+
+      - name: Cache ESP32 Blobs
+        uses: actions/cache@v4
+        # the blobs are at /zephyr-workspace/modules/hal/espressif/zephyr/blobs
+        with:
+          path: zephyr-workspace/modules/hal/espressif/zephyr/blobs
+          key: zephyr-esp32-blobs-main-${{ hashFiles('/zephyr-workspace/zephyr/west.yml') }}
+          restore-keys: |
+            zephyr-esp32-blobs-main-
+
+      # fetch the ESP32 blobs
+      - name: ⬇️ Fetch ESP32 Blobs
+        run: |
+          cd zephyr-workspace
           west blobs fetch hal_espressif
 
       - name: 💾 Cache ~/.cache/ccache
