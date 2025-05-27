@@ -21,29 +21,37 @@ jobs:
       CMAKE_PREFIX_PATH: /opt/toolchains
 
     steps:
-      - name: Checkout code
+      - name: 💾 Cache Zephyr Workspace
+        uses: actions/cache@v4
+        with:
+          path: zephyr-workspace
+          key: zephyr-workspace-${{ hashFiles('zephyr-workspace/zephyr/west.yml') }}
+
+      - name: 🧹 Clean Zephyr Manifest Directory
+        # Clean the manifest directory to ensure a fresh start
+        run: |
+          rm -rf zephyr-workspace/zephyr-esp32-example
+          rm -rf zephyr-workspace/.west
+
+      - name: ✅ Checkout code
         uses: actions/checkout@v4
         with:
           path: zephyr-workspace/zephyr-esp32-example
 
       - name: ♻️ Initialize Zephyr Workspace
-        # Set up the Zephyr workspace and install the Python dependencies
+        # Set up the Zephyr workspace
         run: |
           cd zephyr-workspace
           rm -rf .west
           west init -l zephyr-esp32-example
           west update --narrow -o=--depth=1
 
-      - name: Cache ESP32 Blobs
+      - name: 💾 Cache ESP32 Blobs
         uses: actions/cache@v4
-        # the blobs are at /zephyr-workspace/modules/hal/espressif/zephyr/blobs
         with:
           path: zephyr-workspace/modules/hal/espressif/zephyr/blobs
-          key: zephyr-esp32-blobs-main-${{ hashFiles('/zephyr-workspace/zephyr/west.yml') }}
-          restore-keys: |
-            zephyr-esp32-blobs-main-
+          key: zephyr-esp32-blobs-${{ hashFiles('zephyr-workspace/zephyr/west.yml') }}
 
-      # fetch the ESP32 blobs
       - name: ⬇️ Fetch ESP32 Blobs
         run: |
           cd zephyr-workspace
