@@ -6,6 +6,7 @@ manifest:
       import:
         # Limit the Zephyr modules to the required set
         name-allowlist:
+          - fatfs
           - hal_espressif
           - mbedtls
           - mcuboot

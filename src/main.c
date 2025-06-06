@@ -9,6 +9,10 @@
 #include "memfault/components.h"
 #include "memfault/ports/zephyr/http.h"
 
+#if defined(CONFIG_FILE_SYSTEM)
+  #include "fs_log_init.h"
+#endif
+
 LOG_MODULE_REGISTER(mflt_app, LOG_LEVEL_DBG);
 
 const char *memfault_zephyr_get_device_id(void) {
@@ -41,12 +45,16 @@ void memfault_platform_get_device_info(sMemfaultDeviceInfo *info) {
 }
 
 int main(void) {
-  LOG_INF("Memfault Demo App! Board %s\n", CONFIG_BOARD);
-
   printk("\n" MEMFAULT_BANNER_COLORIZED);
+
+  LOG_INF("Memfault Demo App! Board %s\n", CONFIG_BOARD);
 
   memfault_device_info_dump();
   memfault_zephyr_port_install_root_certs();
+
+#if defined(CONFIG_FILE_SYSTEM)
+  (void)fs_log_init();
+#endif
 
   return 0;
 }
