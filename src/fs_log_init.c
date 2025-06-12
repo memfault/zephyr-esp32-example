@@ -71,6 +71,8 @@ static void prv_ioctl_test(void) {
 int fs_log_init(void) {
   prv_ioctl_test();
 
+  LOG_INF("ioctl_test completed.\n");
+
   LOG_INF("Mounting disk at '%s'", DISK_MOUNT_PT);
   int res = fs_mount(&mp);
 
