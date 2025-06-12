@@ -1,43 +1,18 @@
 common:
-  harness: net
-  tags:
-    - net
-    - wifi
+  tags: memfault
+  platform_allow:
+    - esp_wrover_kit/esp32/procpu
+    - esp32s3_devkitm/esp32s3/procpu
+    - esp32s3_devkitc/esp32s3/procpu
+    - esp32c3_devkitm
 sample:
-  description: Test wifi driver and APIs functionality
-  name: WiFi sample app
+  description: Memfault Zephyr ESP32 Example
+  name: zephyr-esp32-example
 tests:
-  sample.net.wifi:
-    platform_allow:
-      - cc3220sf_launchxl
-      - disco_l475_iot1
-      - reel_board
-    integration_platforms:
-      - cc3220sf_launchxl
-  sample.net.wifi.mikroe_wifi_bt_click:
-    extra_args: SHIELD=mikroe_wifi_bt_click_mikrobus
-    platform_allow: lpcxpresso55s69_cpu0
-  sample.net.wifi.esp_8266:
-    extra_args: SHIELD=esp_8266
-    platform_allow: sam4e_xpro
-  sample.net.wifi.esp_8266_arduino:
-    extra_args: SHIELD=esp_8266_arduino
-    platform_allow:
-      - frdm_k64f
-      - disco_l475_iot1
-    integration_platforms:
-      - frdm_k64f
-  sample.net.wifi.inventek_eswifi_arduino_uart:
-    extra_args: SHIELD=inventek_eswifi_arduino_uart
-    platform_allow:
-      - frdm_k64f
-      - nucleo_f767zi
-    integration_platforms:
-      - frdm_k64f
-  sample.net.wifi.inventek_eswifi_arduino_spi:
-    extra_args: SHIELD=inventek_eswifi_arduino_spi
-    platform_allow:
-      - frdm_k64f
-      - nucleo_f767zi
-    integration_platforms:
-      - frdm_k64f
+  sample.build:
+    build_only: true
+    extra_configs:
+      - CONFIG_MEMFAULT_PROJECT_KEY="dummy"
+      # when building with a symlinked test Memfault SDK module, need to disable
+      # the meta build output, otherwise it will fail as post-link.
+      - CONFIG_BUILD_OUTPUT_META=n

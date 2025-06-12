@@ -11,29 +11,34 @@ on:
 
 jobs:
   build:
+    # Project setup dominates vs. actual per-configuration build times, so
+    # just run twister for all boards instead of splitting into separate jobs.
+    # strategy:
+    #   matrix:
+    #     board:
+    #       [
+    #         esp_wrover_kit/esp32/procpu,
+    #         esp32s3_devkitm/esp32s3/procpu,
+    #         esp32s3_devkitc/esp32s3/procpu,
+    #         esp32c3_devkitm,
+    #       ]
     runs-on: ubuntu-latest
-    container:
-      # Zephyr toolchain from here:
-      # https://github.com/zephyrproject-rtos/docker-image/pkgs/container/ci
-      image: ghcr.io/zephyrproject-rtos/ci:v0.26.6
-    env:
-      # Tell cmake where to find the zephyr sdk
-      CMAKE_PREFIX_PATH: /opt/toolchains
-
     steps:
-      - name: Checkout code
+      - name: ☑️ Checkout
         uses: actions/checkout@v4
         with:
-          path: zephyr-workspace/zephyr-esp32-example
+          path: zephyr-esp32-example
 
-      - name: ♻️ Initialize Zephyr Workspace
-        # Set up the Zephyr workspace and install the Python dependencies
-        run: |
-          cd zephyr-workspace
-          rm -rf .west
-          west init -l zephyr-esp32-example
-          west update --narrow -o=--depth=1
-          west blobs fetch hal_espressif
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: ♻️ Setup Zephyr project
+        uses: zephyrproject-rtos/action-zephyr-setup@v1
+        with:
+          app-path: zephyr-esp32-example
+          toolchains: riscv64-zephyr-elf:xtensa-espressif_esp32_zephyr-elf:xtensa-espressif_esp32s3_zephyr-elf
 
       - name: 💾 Cache ~/.cache/ccache
         uses: actions/cache@v3
@@ -43,27 +48,19 @@ jobs:
           restore-keys: |
             ccache-v1-${{ runner.os }}-
 
-      - name: 🔨 Build Project
+      - name: 🌪️ Run twister
         run: |
-          cd zephyr-workspace
-          ccache -z
+          # not part of action-zephyr-setup
+          west blobs fetch hal_espressif
 
-          west build --sysbuild \
-            --pristine=always \
-            --board=esp32s3_devkitm/esp32s3/procpu zephyr-esp32-example \
-            -- \
-            -DCONFIG_MEMFAULT_PROJECT_KEY=\"1234\"
-
-          west build --sysbuild \
-            --pristine=always \
-            --board=esp32s3_devkitc/esp32s3/procpu zephyr-esp32-example \
-            -- \
-            -DCONFIG_MEMFAULT_PROJECT_KEY=\"1234\"
-
-          west build --sysbuild \
-            --pristine=always \
-            --board=esp32c3_devkitm zephyr-esp32-example \
-            -- \
-            -DCONFIG_MEMFAULT_PROJECT_KEY=\"1234\"
+          zephyr/scripts/twister --testsuite-root zephyr-esp32-example
 
           ccache -sv
+
+      - name: 🎨 Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: twister-artifacts
+          path: |
+            twister-out/**/*.log

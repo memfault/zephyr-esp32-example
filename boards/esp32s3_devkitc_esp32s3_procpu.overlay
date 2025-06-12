@@ -11,3 +11,8 @@
 &coretemp {
 	status = "okay";
 };
+
+/* 2MB psram. This assumes target board is the ESP32-S3-DevKitC-1-N8R2 */
+&psram0 {
+	size = <DT_SIZE_M(2)>;
+};
