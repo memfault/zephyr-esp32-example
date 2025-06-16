@@ -12,15 +12,11 @@ LOG_MODULE_REGISTER(fs_log_init, LOG_LEVEL_INF);
 
   #include <ff.h>
 
-  /*
-   *  Note the fatfs library is able to mount only strings inside _VOLUME_STRS
-   *  in ffconf.h
-   */
-  #if defined(CONFIG_DISK_DRIVER_MMC)
-    #define DISK_DRIVE_NAME "SD2"
-  #else
-    #define DISK_DRIVE_NAME "SD"
-  #endif
+/*
+ *  Note the fatfs library is able to mount only strings inside _VOLUME_STRS
+ *  in ffconf.h
+ */
+  #define DISK_DRIVE_NAME "SD"
 
   #define DISK_MOUNT_PT "/" DISK_DRIVE_NAME ":"
 
@@ -50,16 +46,15 @@ static void prv_ioctl_test(void) {
       LOG_ERR("Unable to get sector count");
       break;
     }
-    LOG_INF("Block count %u", block_count);
 
     if (disk_access_ioctl(disk_pdrv, DISK_IOCTL_GET_SECTOR_SIZE, &block_size)) {
       LOG_ERR("Unable to get sector size");
       break;
     }
-    printk("Sector size %u\n", block_size);
 
     memory_size_mb = (uint64_t)block_count * block_size;
-    printk("Memory Size(MB) %u\n", (uint32_t)(memory_size_mb >> 20));
+
+    LOG_INF("Sector size %u / Memory Size(MB) %u", block_size, (uint32_t)(memory_size_mb >> 20));
 
     if (disk_access_ioctl(disk_pdrv, DISK_IOCTL_CTRL_DEINIT, NULL) != 0) {
       LOG_ERR("Storage deinit ERROR!");
@@ -71,13 +66,13 @@ static void prv_ioctl_test(void) {
 int fs_log_init(void) {
   prv_ioctl_test();
 
-  LOG_INF("ioctl_test completed.\n");
+  LOG_INF("ioctl_test completed.");
 
   LOG_INF("Mounting disk at '%s'", DISK_MOUNT_PT);
   int res = fs_mount(&mp);
 
   if (res == 0) {
-    LOG_INF("Disk mounted.\n");
+    LOG_INF("Disk mounted.");
   }
 
   // fs_unmount(&mp);
