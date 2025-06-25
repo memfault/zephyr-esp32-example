@@ -6,6 +6,7 @@
   #include <zephyr/fs/fs.h>
   #include <zephyr/kernel.h>
   #include <zephyr/logging/log.h>
+  #include <zephyr/logging/log_ctrl.h>
   #include <zephyr/storage/disk_access.h>
 
 LOG_MODULE_REGISTER(fs_log_init, LOG_LEVEL_INF);
@@ -66,6 +67,8 @@ static void prv_ioctl_test(void) {
 int fs_log_init(void) {
   prv_ioctl_test();
 
+  memfault_data_export_dump_chunks();
+
   LOG_INF("ioctl_test completed.");
 
   LOG_INF("Mounting disk at '%s'", DISK_MOUNT_PT);
@@ -73,11 +76,21 @@ int fs_log_init(void) {
 
   if (res == 0) {
     LOG_INF("Disk mounted.");
+    // now safe to initialize the fs log backend
+    const struct log_backend *backend = log_backend_get_by_name("log_backend_fs");
+
+    if (backend == NULL) {
+      LOG_ERR("Log backend 'log_backend_fs' not found.");
+      return -ENODEV;
+    }
+
+    log_backend_enable(backend, backend->cb->ctx, CONFIG_LOG_MAX_LEVEL);
+    LOG_INF("File system log backend enabled.");
   }
 
   // fs_unmount(&mp);
 
-  return 0;  // res;
+  return 0;
 }
 
 #endif  // CONFIG_FILE_SYSTEM
