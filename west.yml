@@ -13,5 +13,4 @@ manifest:
     - name: memfault-firmware-sdk
       url: https://github.com/memfault/memfault-firmware-sdk
       path: modules/lib/memfault-firmware-sdk
-      # Temporarily use a fork with ESP32 support, until 1.26.0 is released
-      revision: noahp/1.25.0+esp32-support
+      revision: 1.26.0
