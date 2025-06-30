@@ -4,6 +4,7 @@
 #include <zephyr/drivers/hwinfo.h>
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
+#include <zephyr/shell/shell.h>
 
 #include "app_version.h"
 #include "memfault/components.h"
@@ -43,6 +44,22 @@ void memfault_platform_get_device_info(sMemfaultDeviceInfo *info) {
     .hardware_version = CONFIG_BOARD,
   };
 }
+
+//! Test command to fs log extraction
+#include "memfault/ports/zephyr/memfault_fs_log_export.h"
+
+static int cmd_test_fs_log_extraction(const struct shell *sh, size_t argc, char **argv) {
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+
+  memfault_fs_log_trigger_export();
+  shell_print(sh, "done");
+
+  return 0;
+}
+
+SHELL_CMD_REGISTER(mflt_fs_log_extract, NULL, "Test command to trigger file system log extraction",
+                   cmd_test_fs_log_extraction);
 
 int main(void) {
   printk("\n" MEMFAULT_BANNER_COLORIZED);

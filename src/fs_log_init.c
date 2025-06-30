@@ -67,8 +67,6 @@ static void prv_ioctl_test(void) {
 int fs_log_init(void) {
   prv_ioctl_test();
 
-  memfault_data_export_dump_chunks();
-
   LOG_INF("ioctl_test completed.");
 
   LOG_INF("Mounting disk at '%s'", DISK_MOUNT_PT);
