@@ -4,11 +4,19 @@
 menu "Memfault Example Application Configuration"
 
 config MEMFAULT_EXAMPLE_SOFTWARE_VERSION
-    string "Software Version"
-    default "1.0.0"
-    help
-      The software version to report to Memfault.
+	string "Software Version"
+	default "1.0.0"
+	help
+	  The software version to report to Memfault.
 
 endmenu
 
 source "Kconfig.zephyr"
+
+# This is a new symbol in Zephyr v4.4. To enable building on latest Zephyr,
+# we need this set, but cannot set it in prj.conf if we want to maintain
+# compatibility with Zephyr v4.3, so use a Kconfig override to work around the
+# issue
+config MBEDTLS_CIPHERSUITE_TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+	bool "Ciphersuite TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
+	default y
