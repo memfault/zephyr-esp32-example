@@ -3,13 +3,20 @@
 # This is loaded when building this directory with west.
 menu "Memfault Example Application Configuration"
 
-config MEMFAULT_EXAMPLE_SOFTWARE_VERSION
-	string "Software Version"
-	default "1.0.0"
+config MEMFAULT_APP_OVERRIDE_SOFTWARE_VERSION
+	string "Override default software version"
+	default ""
 	help
-	  The software version to report to Memfault.
+	  Set this to override the built-in software version string from the
+	  VERSION file. Primarily used for building in CI.
 
 endmenu
+
+config MEMFAULT_BUILTIN_DEVICE_INFO_SOFTWARE_VERSION
+	default MEMFAULT_APP_OVERRIDE_SOFTWARE_VERSION if MEMFAULT_APP_OVERRIDE_SOFTWARE_VERSION != ""
+
+config MCUBOOT_IMGTOOL_SIGN_VERSION
+	default MEMFAULT_APP_OVERRIDE_SOFTWARE_VERSION if MEMFAULT_APP_OVERRIDE_SOFTWARE_VERSION != ""
 
 source "Kconfig.zephyr"
 
