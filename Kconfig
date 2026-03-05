@@ -35,6 +35,31 @@ config WIFI_WATCHDOG_CHECK_INTERVAL_SECONDS
 	help
 	  Interval in seconds between WiFi watchdog checks.
 
+config SNTP_TIME_SYNC_ENABLE
+	bool "Enable SNTP time synchronization"
+	default y
+	depends on SNTP && WIFI
+	help
+	  Synchronizes the kernel real-time clock via an NTP server each time
+	  a WiFi connection is established, and then periodically at the
+	  interval set by SNTP_TIME_SYNC_RESYNC_INTERVAL_SECONDS.
+	  Uses the Zephyr SNTP client (sntp_init/query/close) directly.
+
+config SNTP_TIME_SYNC_SERVER
+	string "NTP server hostname"
+	default "pool.ntp.org"
+	depends on SNTP_TIME_SYNC_ENABLE
+	help
+	  Hostname of the NTP server to query for time synchronization.
+
+config SNTP_TIME_SYNC_RESYNC_INTERVAL_SECONDS
+	int "Periodic SNTP re-sync interval (seconds)"
+	default 21600  # 6 hours
+	depends on SNTP_TIME_SYNC_ENABLE
+	help
+	  How often to re-sync the clock while WiFi is connected.
+	  The initial sync is triggered immediately on WiFi connect.
+
 choice HEARTBEAT_LED_TYPE
 	prompt "Select heartbeat LED variant"
 	default HEARTBEAT_LED_STRIP if $(dt_alias_enabled,led-strip)
