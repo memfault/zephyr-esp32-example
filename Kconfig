@@ -35,6 +35,28 @@ config WIFI_WATCHDOG_CHECK_INTERVAL_SECONDS
 	help
 	  Interval in seconds between WiFi watchdog checks.
 
+choice HEARTBEAT_LED_TYPE
+	prompt "Select heartbeat LED variant"
+	default HEARTBEAT_LED_STRIP if $(dt_alias_enabled,led-strip)
+	default HEARTBEAT_LED_GPIO if $(dt_alias_enabled,heartbeat-led)
+
+config HEARTBEAT_LED_STRIP
+	bool "WS2812 RGB LED strip"
+	depends on LED_STRIP
+	help
+	  Enable heartbeat LED using a WS2812 RGB LED strip.
+	  GREEN when WiFi is connected, RED otherwise.
+	  Blinks at a 1-second interval.
+
+config HEARTBEAT_LED_GPIO
+	bool "GPIO LED"
+	depends on GPIO
+	help
+	  Enable heartbeat LED using a simple GPIO-driven LED.
+	  Blinks at a 1-second interval unconditionally.
+
+endchoice
+
 endmenu
 
 config MEMFAULT_BUILTIN_DEVICE_INFO_SOFTWARE_VERSION
