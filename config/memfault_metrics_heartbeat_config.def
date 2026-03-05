@@ -1,3 +1,11 @@
 // Define the WiFi scan result count max metric
 // This tracks the maximum number of WiFi scan results seen during each heartbeat period
 MEMFAULT_METRICS_KEY_DEFINE(wifi_scan_result_count_max, kMemfaultMetricType_Unsigned)
+
+// Number of successful SNTP time synchronizations in this heartbeat period
+MEMFAULT_METRICS_KEY_DEFINE(sntp_sync_count, kMemfaultMetricType_Unsigned)
+
+// Clock error corrected by the most recent SNTP sync (seconds, signed).
+// Only recorded when the system clock was already valid (> 2023) before the
+// sync, so the initial 1970-epoch → real-time jump is excluded.
+MEMFAULT_METRICS_KEY_DEFINE(sntp_sync_delta_seconds, kMemfaultMetricType_Signed)

@@ -51,3 +51,9 @@ i2s_led: &i2s0 {
 &dma {
 	status = "okay";
 };
+
+/* Enable the ESP32-S3 RTC timer counter so it can be used for time persistence
+ * across soft resets via the counter API and __noinit RAM anchor. */
+&rtc_timer {
+        status = "okay";
+};

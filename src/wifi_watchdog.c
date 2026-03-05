@@ -190,6 +190,13 @@ static void prv_wifi_watchdog_thread(void* arg1, void* arg2, void* arg3) {
       LOG_DBG("WiFi not connected for %lld ms (timeout: %u ms)", time_since_ok,
               timeout_ms);
 
+      // Try retriggering connection
+      struct net_if* iface = net_if_get_wifi_sta();
+      int rc = net_mgmt(NET_REQUEST_WIFI_CONNECT_STORED, iface, NULL, 0);
+      if (rc) {
+        LOG_ERR("Error retriggering WiFi connection: %d", rc);
+      }
+
       if (time_since_ok > timeout_ms) {
         // Reboot only if a stored credential matches a visible AP;
         // wifi_credentials_for_each_ssid handles the "creds configured" check.
@@ -242,7 +249,7 @@ static int wifi_watchdog_init(void) {
 }
 
 // Memfault metrics collection callback
-void memfault_metrics_heartbeat_collect_data(void) {
+void wifi_watchdog_metrics_collect(void) {
   // Set the maximum scan result count for this heartbeat period
   int rc = memfault_metrics_heartbeat_set_unsigned(
       MEMFAULT_METRICS_KEY(wifi_scan_result_count_max),
