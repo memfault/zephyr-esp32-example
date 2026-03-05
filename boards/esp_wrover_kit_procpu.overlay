@@ -1,3 +1,9 @@
 &wifi {
 	status = "okay";
 };
+
+/ {
+	aliases {
+		heartbeat-led = &red_led;
+	};
+};
