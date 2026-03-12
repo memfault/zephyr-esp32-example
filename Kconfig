@@ -27,3 +27,12 @@ source "Kconfig.zephyr"
 config MBEDTLS_CIPHERSUITE_TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
 	bool "Ciphersuite TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
 	default y
+
+# This symbol was renamed in Zephyr v4.4. Enable both to make sure we build
+# before and after v4.4
+config MBEDTLS_SSL_SERVER_NAME_INDICATION
+	bool "Support for RFC 6066 server name indication (SNI) in SSL"
+	default y
+config MBEDTLS_SERVER_NAME_INDICATION
+	bool "Support for RFC 6066 server name indication (SNI) in SSL"
+	default y
