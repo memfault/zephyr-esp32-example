@@ -2,13 +2,14 @@ manifest:
   projects:
     - name: zephyr
       url: https://github.com/zephyrproject-rtos/zephyr
-      revision: v4.3.0
+      revision: b93e61d02d5cd08d2fc559feb0253f9de3491777 # v4.4 dev sha
       import:
         # Limit the Zephyr modules to the required set
         name-allowlist:
           - hal_espressif
           - mbedtls
           - mcuboot
+          - tf-psa-crypto
 
     - name: memfault-firmware-sdk
       url: https://github.com/memfault/memfault-firmware-sdk

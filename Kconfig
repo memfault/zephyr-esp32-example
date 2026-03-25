@@ -33,6 +33,22 @@ config MBEDTLS_CIPHERSUITE_TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
 config MBEDTLS_SSL_SERVER_NAME_INDICATION
 	bool "Support for RFC 6066 server name indication (SNI) in SSL"
 	default y
-config MBEDTLS_SERVER_NAME_INDICATION
-	bool "Support for RFC 6066 server name indication (SNI) in SSL"
-	default y
+# config MBEDTLS_SERVER_NAME_INDICATION
+# 	bool "Support for RFC 6066 server name indication (SNI) in SSL"
+# 	default y
+
+# # This symbol
+# config MBEDTLS_SHA1
+# 	bool "SHA-1 hash algorithm"
+
+# # This symbol was removed in Zephyr v4.4. We don't want PSA crypto.
+# # Disable PSA Crypto. We are missing some key flag or feature in PSA Crypto that
+# # prevents establishing a TLS connection with Memfault. Using MbedTLS built in
+# # ("legacy") crypto instead, which works fine.
+# # CONFIG_MBEDTLS_PSA_CRYPTO_C=y
+# config MBEDTLS_USE_PSA_CRYPTO
+# 	bool "Use PSA APIs instead of legacy MbedTLS when possible"
+# 	default n
+# 	help
+# 	  Use PSA APIs instead of legacy MbedTLS functions in TLS/DTLS and other
+# 	  "intermediate" modules such as PK, MD and Cipher.
