@@ -12,6 +12,7 @@ manifest:
           - tf-psa-crypto
 
     - name: memfault-firmware-sdk
-      url: https://github.com/memfault/memfault-firmware-sdk
+      # temporarily using a fork until these fixes are merged
+      url: https://github.com/noahp/memfault-firmware-sdk
       path: modules/lib/memfault-firmware-sdk
-      revision: 1.35.0
+      revision: noahp/zephyr-v4.4-psa-crypto-compat
