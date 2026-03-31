@@ -1,0 +1,6 @@
+west-commands:
+  - file: scripts/west_extensions.py
+    commands:
+      - name: project-hello
+        class: ProjectHello
+        help: sample Project west extension command
