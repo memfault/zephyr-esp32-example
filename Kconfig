@@ -10,6 +10,31 @@ config MEMFAULT_APP_OVERRIDE_SOFTWARE_VERSION
 	  Set this to override the built-in software version string from the
 	  VERSION file. Primarily used for building in CI.
 
+config WIFI_WATCHDOG_ENABLE
+	bool "Enable WiFi watchdog"
+	default y
+	depends on WIFI && MEMFAULT
+	help
+	  Enable WiFi watchdog that monitors WiFi connectivity and reboots
+	  if a known network is available but not connected for a configurable
+	  period of time.
+
+config WIFI_WATCHDOG_TIMEOUT_MINUTES
+	int "WiFi watchdog timeout in minutes"
+	default 5
+	depends on WIFI_WATCHDOG_ENABLE
+	help
+	  Time in minutes to wait before triggering a reboot when WiFi
+	  credentials are configured, a known network is detected, but
+	  WiFi is not connected.
+
+config WIFI_WATCHDOG_CHECK_INTERVAL_SECONDS
+	int "WiFi watchdog check interval in seconds"
+	default 30
+	depends on WIFI_WATCHDOG_ENABLE
+	help
+	  Interval in seconds between WiFi watchdog checks.
+
 endmenu
 
 config MEMFAULT_BUILTIN_DEVICE_INFO_SOFTWARE_VERSION
