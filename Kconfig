@@ -19,20 +19,3 @@ config MCUBOOT_IMGTOOL_SIGN_VERSION
 	default MEMFAULT_APP_OVERRIDE_SOFTWARE_VERSION if MEMFAULT_APP_OVERRIDE_SOFTWARE_VERSION != ""
 
 source "Kconfig.zephyr"
-
-# This is a new symbol in Zephyr v4.4. To enable building on latest Zephyr,
-# we need this set, but cannot set it in prj.conf if we want to maintain
-# compatibility with Zephyr v4.3, so use a Kconfig override to work around the
-# issue
-config MBEDTLS_CIPHERSUITE_TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
-	bool "Ciphersuite TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
-	default y
-
-# This symbol was renamed in Zephyr v4.4. Enable both to make sure we build
-# before and after v4.4
-config MBEDTLS_SSL_SERVER_NAME_INDICATION
-	bool "Support for RFC 6066 server name indication (SNI) in SSL"
-	default y
-config MBEDTLS_SERVER_NAME_INDICATION
-	bool "Support for RFC 6066 server name indication (SNI) in SSL"
-	default y
