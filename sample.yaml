@@ -2,7 +2,6 @@ common:
   tags: memfault
   platform_allow:
     - esp_wrover_kit/esp32/procpu
-    - esp32s3_devkitm/esp32s3/procpu
     - esp32s3_devkitc/esp32s3/procpu
     - esp32c3_devkitm
     - esp32c6_devkitc/esp32c6/hpcore
