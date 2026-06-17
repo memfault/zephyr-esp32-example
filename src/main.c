@@ -13,6 +13,8 @@
 #include "memfault/ports/zephyr/core.h"
 #include "memfault/ports/zephyr/http.h"
 
+extern int memfault_install_ecdsa_certs(void);
+
 LOG_MODULE_REGISTER(mflt_app, LOG_LEVEL_DBG);
 
 // This will be available in the memfault/ports/zephyr/core.h header in a later
@@ -52,7 +54,8 @@ int main(void) {
   printk("\n" MEMFAULT_BANNER_COLORIZED);
 
   memfault_device_info_dump();
-  memfault_zephyr_port_install_root_certs();
+  memfault_install_ecdsa_certs();
+
   // Initiate auto connection on the wifi interface
   struct net_if* iface = net_if_get_default();
   int rc = net_mgmt(NET_REQUEST_WIFI_CONNECT_STORED, iface, NULL, 0);
