@@ -14,5 +14,4 @@ manifest:
     - name: memfault-firmware-sdk
       url: https://github.com/memfault/memfault-firmware-sdk
       path: modules/lib/memfault-firmware-sdk
-      # temporary branch for PSA sha1 workaround.
-      revision: noahp/1.40.0-rc1
+      revision: 1.42.0
