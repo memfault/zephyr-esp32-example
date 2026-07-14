@@ -2,13 +2,13 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <zephyr/app_version.h>
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 #include <zephyr/net/net_if.h>
 #include <zephyr/net/net_mgmt.h>
 #include <zephyr/net/wifi_mgmt.h>
 
-#include "app_version.h"
 #include "memfault/components.h"
 #include "memfault/ports/zephyr/core.h"
 #include "memfault/ports/zephyr/http.h"
