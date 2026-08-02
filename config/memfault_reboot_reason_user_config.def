@@ -1,0 +1,2 @@
+// Wi-Fi Watchdog is not desirable, but should not impact stability score.
+MEMFAULT_EXPECTED_REBOOT_REASON_DEFINE(WifiWatchdog)

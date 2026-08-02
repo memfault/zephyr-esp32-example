@@ -53,8 +53,9 @@ int main(void) {
 
   memfault_device_info_dump();
   memfault_zephyr_port_install_root_certs();
+
   // Initiate auto connection on the wifi interface
-  struct net_if* iface = net_if_get_default();
+  struct net_if* iface = net_if_get_wifi_sta();  // net_if_get_default();
   int rc = net_mgmt(NET_REQUEST_WIFI_CONNECT_STORED, iface, NULL, 0);
 
   if (rc) {
